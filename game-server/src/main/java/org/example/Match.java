@@ -1,7 +1,7 @@
 package org.example;
 
 public class Match {
-    private final String guid; // String is temporary, should be UUID
+    private final String id; // String is temporary, should be UUID
     private long timeMs = 0;
     private final long startTime;
     private long lastUpdateAt;
@@ -9,15 +9,15 @@ public class Match {
     private long accumulatedUpdateTime = 0;
     private long accumulatedDrift = 0;
 
-    public Match(String guid) {
-        this.guid = guid;
+    public Match(String id) {
+        this.id = id;
 
         startTime = System.currentTimeMillis();
         lastUpdateAt = System.currentTimeMillis();
     }
 
-    public String getGuid() {
-        return guid;
+    public String getId() {
+        return id;
     }
 
     public void update(long dt) {
@@ -37,7 +37,7 @@ public class Match {
         long actualDurationMs = lastUpdateAt - startTime;
         long drift = Math.abs(timeMs - actualDurationMs);
 
-        System.out.println(guid + " Ticked Duration: [" + timeMs + "] Actual Duration: [" + actualDurationMs + "]");
+        System.out.println(id + " Ticked Duration: [" + timeMs + "] Actual Duration: [" + actualDurationMs + "]");
         System.out.println("Time drift: [" + Math.abs(timeMs - actualDurationMs) + "]");
         System.out.println("Ticks: " + ticks);
         System.out.println("Drift per tick: " + (double) drift / ticks);

@@ -1,8 +1,9 @@
 package org.example;
 
 public class GameServer {
-    private static final long SECOND_IN_MS = 1000;
-    private static final long MINUTE_IN_MS = 60 * SECOND_IN_MS;
+    private static final long MILLIS_IN_SECOND = 1000;
+    private static final long MILLIS_IN_MINUTE = 60 * MILLIS_IN_SECOND;
+    private static final long DELTA_TIME_MS = 40;
 
     public static void main(String[] args) throws InterruptedException {
         System.out.println("This is a real-time game server.");
@@ -10,8 +11,8 @@ public class GameServer {
         var match1 = new Match("Zerg");
         var match2 = new Match("Toss");
 
-        var mt1 = new MatchThread(50, match1);
-        var mt2 = new MatchThread(50, match2);
+        var mt1 = new MatchRunner(DELTA_TIME_MS, match1);
+        var mt2 = new MatchRunner(DELTA_TIME_MS, match2);
 
         var match1ActualThread = new Thread(mt1);
         var match2ActualThread = new Thread(mt2);
@@ -19,7 +20,7 @@ public class GameServer {
         match1ActualThread.start();
         match2ActualThread.start();
 
-        Thread.sleep(MINUTE_IN_MS);
+        Thread.sleep(MILLIS_IN_MINUTE);
 
         mt1.stop();
         mt2.stop();
