@@ -15,12 +15,12 @@ public class MatchRunner implements Runnable {
     @Override
     public void run() {
         System.out.println("Match " + match.getId() + " is started.");
-        long target = System.currentTimeMillis();
+        long nextUpdateAt = System.currentTimeMillis();
 
         while (isRunning.get()) {
-            target += dtMs;
+            nextUpdateAt += dtMs;
             match.update(dtMs);
-            chillUntil(target);
+            chillUntil(nextUpdateAt);
         }
     }
 
