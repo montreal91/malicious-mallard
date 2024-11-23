@@ -133,4 +133,32 @@ class MatchTest {
         match.update(40);
         assertTrue(match.isOver());
     }
+
+    @Test
+    void testClickActionWithSequentialFlow() {
+        // Arrange
+        inputQueue.add(new SharedCommandAction(BaseAction.Type.CLICK, 1)); // Player1 clicks
+
+        // Act - Without selection
+        match.update(40);
+
+        // Assert - Player1's unit should not be clicked
+        DummyUnit unit1 = (DummyUnit) match.getUnitStorage_Test().get(1);
+        assertNotNull(unit1, "Unit1 should exist in the match.");
+        assertEquals(0, unit1.getClicks(), "Unit1 should not be clicked as no units were selected.");
+
+        // Arrange - Select Player1's unit and click again
+        inputQueue.add(new SelectAction(1, Set.of(1))); // Player1 selects Unit1
+        inputQueue.add(new SharedCommandAction(BaseAction.Type.CLICK, 1)); // Player1 clicks
+        match.update(40);
+
+        // Assert - Player1's unit should now be clicked
+        assertEquals(1, unit1.getClicks(), "Unit1 should have been clicked once.");
+
+        // Assert - Player2's unit should remain untouched
+        DummyUnit unit2 = (DummyUnit) match.getUnitStorage_Test().get(2);
+        assertNotNull(unit2, "Unit2 should exist in the match.");
+        assertEquals(0, unit2.getClicks(), "Unit2 should not be clicked by Player1.");
+    }
+
 }
